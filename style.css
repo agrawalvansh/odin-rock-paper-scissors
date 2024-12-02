@@ -1,0 +1,41 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header{
+    height: 100px;
+    background-color: #081b31;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img:hover{
+    border: 8px solid black;
+}
+
+img{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 50%;    
+}
+
+.imgs{
+    padding-top: 100px;
+    width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
