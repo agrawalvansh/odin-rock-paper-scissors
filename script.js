@@ -1,69 +1,79 @@
-// 0 = Rock, 1 = Paper, 2 = Scissor
+let userScore = 0;
+let compScore = 0;
 
-// Function to get the computer's choice
-function getComputerChoice() {
-    return Math.floor(Math.random() * 3);
+const choices = document.querySelectorAll(".choice");
+const msg = document.querySelector("#msg");
+
+const userScoreP = document.querySelector("#user-score");
+const compScoreP = document.querySelector("#comp-score");
+
+const genCompChoice = () => {
+    const items = ["rock", "paper", "scissors"];
+    const num = Math.floor(Math.random() * 3);
+    return items[num];
 }
 
-// Function to get the human's choice
-function getHumanChoice() {
-    let choice;
-    do {
-        choice = parseInt(prompt("Please enter your choice: 0 for Rock, 1 for Paper, 2 for Scissor"));
-    } while (isNaN(choice) || choice < 0 || choice > 2); // Ensure valid input
-    return choice;
+let drawGame = () => {
+    console.log("The game was a draw");
+    msg.innerText = "The game was a draw!";
+    msg.style.backgroundColor = "blue";
 }
 
-// Play a single round and return the result
-function playRound(humanChoice, computerChoice) {
-    if (humanChoice === computerChoice) {
-        console.log("It's a tie!");
-        return "tie";
-    } else if (
-        (humanChoice === 0 && computerChoice === 2) || // Rock beats Scissor
-        (humanChoice === 1 && computerChoice === 0) || // Paper beats Rock
-        (humanChoice === 2 && computerChoice === 1)    // Scissor beats Paper
-    ) {
-        console.log("You Won this round!");
-        return "human";
+let showWinner = (userWin) => {
+    if (userWin) {
+        console.log("You Won");
+        userScore++;
+        msg.innerText = "You Won!";
+        msg.style.backgroundColor = "green";
+        userScoreP.innerText = userScore;
     } else {
-        console.log("Computer Won this round!");
-        return "computer";
+        console.log("Comp Won");
+        compScore++;
+        msg.innerText = "You Lose!";
+        msg.style.backgroundColor = "red";
+        compScoreP.innerText = compScore;
     }
 }
 
-// Play the entire game
-function playGame() {
-    let countHuman = 0;
-    let countComputer = 0;
-    const rounds = 5;
+const playGame = (userChoice) => {
+    // Generate compChoice
+    let compChoice = genCompChoice();
+    console.log("Comp Choice = " + compChoice);
 
-    for (let count = 1; count <= rounds; count++) {
-        console.log(`\nRound ${count}`);
-        const humanChoice = getHumanChoice();
-        const computerChoice = getComputerChoice();
-
-        console.log(`You chose: ${humanChoice === 0 ? "Rock" : humanChoice === 1 ? "Paper" : "Scissor"}`);
-        console.log(`Computer chose: ${computerChoice === 0 ? "Rock" : computerChoice === 1 ? "Paper" : "Scissor"}`);
-
-        const result = playRound(humanChoice, computerChoice);
-        if (result === "human") {
-            countHuman++;
-        } else if (result === "computer") {
-            countComputer++;
-        }
-    }
-
-    // Final result
-    console.log("\nGame Over");
-    if (countHuman > countComputer) {
-        console.log("You Won the Series!");
-    } else if (countComputer > countHuman) {
-        console.log("You Lost the Series!");
-    } else {
-        console.log("The Series is a Tie!");
-    }
+    if(userChoice == compChoice){
+        drawGame();
+   } else{
+       let userWin = true;
+       if(userChoice == "rock"){
+           //S,P
+           if(compChoice == "paper"){
+               userWin = false;
+           }else{
+               userWin = true;
+           }
+       } else if (userChoice == "paper"){
+           //R,S
+           if(compChoice == "scissors"){
+               userWin = false
+           } else {
+               userWin = true
+           }
+       } else{
+           //R,P
+           if(compChoice == "rock"){
+               userWin = false
+           }else {
+               userWin = true
+           }
+       }
+       showWinner(userWin); // Pass userWin as an argument
+   }
 }
 
-// Start the game
-playGame();
+choices.forEach((choice) => {
+    choice.addEventListener("click", () => {
+        let userChoice = choice.getAttribute("id");
+        console.log("User Choice = " + userChoice);
+        playGame(userChoice);
+    });
+});
